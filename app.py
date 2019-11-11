@@ -7,10 +7,10 @@ from werkzeug.utils import secure_filename
 app = Flask(__name__)
 
 # define a folder to store and later serve the images
-app.config["IMAGE_UPLOADS"] = "static/img/"
+app.config["IMAGE_UPLOADS"] = "static/pdf/"
 
 # allow files of a specific type
-ALLOWED_IMAGE_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
+ALLOWED_IMAGE_EXTENSIONS = set(['pdf'])
 
 # function to check the file extension
 def allowed_file(filename):
