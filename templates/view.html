@@ -9,31 +9,32 @@
 </head>
 <body>
     <div class="container-fluid bg-secondary text-light">
-
-        {% if deleted == True %}
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                 Arquivo foi deletado com sucesso!
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button> 
-            </div>
-
-        {% elif deleted==False %}
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                 Nossa bandeira jamais será vermelha!
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button> 
-            </div>
-
-        {% else %}
-
-        {% endif %}
-
         <br>
         <br>
         <div class="container">
             <h2>Importar novo PDF para analise</h2>
+            <br>
+            {% if update == True %}
+              <div class="alert alert-success alert-dismissible fade show" role="alert">
+                Arquivo foi atualizado com sucesso!
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button> 
+              </div>
+
+            {% elif update==False %}
+              <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                Houve algum erro ao atualizar , verifique com o nem-sei ou nem ligo
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button> 
+              </div>
+
+            {% else %}
+            {% endif %}
+
+            <br>
+
             <div class="box">
                 <form class="form-inline" id="upload-form" action="{{ url_for('upload') }}" method="POST" enctype="multipart/form-data">
                     <div class="form-group mx-sm-3 mb-2">
@@ -51,31 +52,46 @@
     <br>
     <div class="container bg-primary justify-content-center">
     <br>
-        <h2 class="text-center text-light">Arquivos importados anteriormente</h2>
+        <h2 class="text-center text-light">Conteudo do arquivo :</h2>
         <br>
          <table class="table table-dark table-striped table-bordered table-hover">
             <thead>
-              <th class="text-center">Object ID</th>
-              <th class="text-center">Primeira linha</th>
-              <th class="text-center">Vizualizar | Excluir</th>
+              <th class="text-center">Nº linha</th>
+              <th class="text-center">Informação linha</th>
+              <th class="text-center">Atualizar linha</th>
             </tr>  
             </thead>
             <tbody>
-                {% for obj in select_all %}
+                {% for key , value in pdf.items() %}
+                  {% if pdf['_id'] != value %}
                     <tr>
-                        <td class="text-center align-middle">{{ obj['_id'] }}</td>
-                        <td class="text-center align-middle">{{ obj['linha 1'] }}</td>
-                        <td class="text-center align-middle">
-                            <div class="btn-group" role="group" aria-label="Exemplo básico">
-                                <button type="button" class="btn btn-warning"><a href="{{ url_for('view',id=obj['_id']) }}">Vizualizar</a></button>
-                                <button type="button" class="btn btn-danger"><a href="{{ url_for('delete',id=obj['_id']) }}">Deletar</a></button>
+                      <td class="text-center align-middle">{{ key[-2:] }}</td> 
+                      <td class="text-center align-middle">{{ value }}</td>
+                      <td class="text-center align-middle">
+                        <div class="box">
+                          <form class="form-inline" id="upload-form" action="{{ url_for('update') }}" method="POST" enctype="multipart/form-data">
+                            <div class="form-group mx-sm-3 mb-2">
+                              <input type="text" class="form-control mx-sm-3" id="valor" name="valor"/>
+                              <input type="hidden" id="linha" name="linha" value="{{ key }}"/>
+                              <input type="hidden" id="id" name="id"value="{{ pdf['_id'] }}"/>
                             </div>
-                        </td>
+                            <div class="form-group mx-sm-3 mb-2">
+                              <button class="btn btn-warning">Atualizar</button>
+                            </div>
+                          </form>
+                        </div>
+                      </td>
                     </tr>
+                  {% endif %}
                 {% endfor %}
             </tbody>
         </table>
         <br>
+      <div class="row justify-content-center">
+        <a class="btn btn-success" href="{{ url_for('home_page') }}" role="button">Voltar a home</a>
+      </div>
+      <br>
     </div>
+    <br>
 </body>
 </html>

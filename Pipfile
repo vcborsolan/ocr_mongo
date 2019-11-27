@@ -10,9 +10,11 @@ pytesseract = "*"
 pillow = "*"
 flask = "*"
 ipython = "*"
-install = "*"
 pdf2image = "*"
-
+wand = "*"
+pypdf = "*"
+pymongo = "*"
+flask-pymongo = "*"
 
 [requires]
 python_version = "3.7"
